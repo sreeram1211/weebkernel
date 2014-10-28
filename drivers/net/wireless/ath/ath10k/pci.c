@@ -2325,24 +2325,6 @@ static int ath10k_pci_warm_reset(struct ath10k *ar)
 		return ret;
 	}
 
-	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot warm reset complete\n");
-
-	return 0;
-}
-
-static int ath10k_pci_qca99x0_soft_chip_reset(struct ath10k *ar)
-{
-	ath10k_pci_irq_disable(ar);
-	return ath10k_pci_qca99x0_chip_reset(ar);
-}
-
-static int ath10k_pci_safe_chip_reset(struct ath10k *ar)
-{
-	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
-
-	if (!ar_pci->pci_soft_reset)
-		return -ENOTSUPP;
-
 	return ar_pci->pci_soft_reset(ar);
 }
 
