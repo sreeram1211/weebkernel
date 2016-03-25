@@ -2062,7 +2062,7 @@ struct task_struct {
 	atomic64_t *concurrent_policy_time;
 
 #ifdef CONFIG_MMU
-	struct list_head oom_reaper_list;
+	struct task_struct *oom_reaper_list;
 #endif
 
 #ifdef CONFIG_ANDROID_SIMPLE_LMK
