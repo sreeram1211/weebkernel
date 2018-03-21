@@ -6784,6 +6784,10 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 			if (idle_cpu(i)) {
 				int idle_idx = idle_get_state_idx(cpu_rq(i));
 
+				/* Select idle CPU with lower cap_orig */
+				if (capacity_orig > best_idle_min_cap_orig)
+					continue;
+
 				/*
 				 * Skip CPUs in deeper idle state, but only
 				 * if they are also less energy efficient.
@@ -6795,7 +6799,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 					continue;
 
 				/* Keep track of best idle CPU */
-				target_capacity = capacity_orig;
+				best_idle_min_cap_orig = capacity_orig;
 				best_idle_cstate = idle_idx;
 				best_idle_cpu = i;
 				continue;
