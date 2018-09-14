@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="⚡️WeebKernelv1.5a⚡️"
+CONFIG_LOCALVERSION="⚡️WeebKernelv1.5b⚡️"
 # CONFIG_USELIB is not set
 CONFIG_AUDIT=y
 # CONFIG_AUDITSYSCALL is not set
