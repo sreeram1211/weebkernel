@@ -61,14 +61,13 @@ fi;
 
 
 ## AnyKernel install
-# don't even think about flashing on Non Treble
+# don't even think about flashing on Treble
 is_treble=$(file_getprop /system/build.prop "ro.treble.enabled");
-if [ ! "$is_treble" -o "$is_treble" == "false" ]; then
+if [ ! "$is_treble" -o "$is_treble" == "true" ]; then
   ui_print " ";
-  ui_print "Weeb Kernel only supports Treble!";
+  ui_print "Weeb Kernel only supports Non Treble!";
   exit 1;
 fi;
-
 dump_boot;
 
 # begin ramdisk changes
