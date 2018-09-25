@@ -46,11 +46,6 @@
 #include <linux/file.h>
 #include <linux/kthread.h>
 #include <linux/dma-buf.h>
-<<<<<<< HEAD
-#include <linux/cpu_input_boost.h>
-#include <linux/devfreq_boost.h>
-=======
->>>>>>> parent of 92d38fb723ae... msm: mdss: Boost CPU when a new frame is ready to be committed
 #include <sync.h>
 #include <sw_sync.h>
 
