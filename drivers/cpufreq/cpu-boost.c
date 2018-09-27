@@ -30,8 +30,6 @@
 
 #include "../../kernel/sched/sched.h"
 
-#include "../../kernel/sched/sched.h"
-
 struct cpu_sync {
 	int cpu;
 	unsigned int input_boost_min;
