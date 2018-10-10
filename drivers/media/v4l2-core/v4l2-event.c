@@ -312,7 +312,6 @@ int v4l2_event_unsubscribe(struct v4l2_fh *fh,
 
 	kfree(sev);
 	mutex_unlock(&fh->subscribe_lock);
->>>>>>> v4.4.160
 
 	return 0;
 }
