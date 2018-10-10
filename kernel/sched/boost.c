@@ -25,6 +25,10 @@ unsigned int sysctl_sched_boost;
 static int boost_slot;
 #endif // CONFIG_DYNAMIC_STUNE_BOOST
 
+#ifdef CONFIG_DYNAMIC_STUNE_BOOST
+static int boost_slot;
+#endif // CONFIG_DYNAMIC_STUNE_BOOST
+
 static bool verify_boost_params(int old_val, int new_val)
 {
 	/*
