@@ -682,7 +682,7 @@ prefer_idle_write(struct cgroup_subsys_state *css, struct cftype *cft,
 	    u64 prefer_idle)
 {
 	struct schedtune *st = css_st(css);
-	st->prefer_idle = !!prefer_idle;
+	st->prefer_idle = prefer_idle;
 
 	return 0;
 }
@@ -1059,39 +1059,6 @@ static int max_active_boost(struct schedtune *st)
 
 	mutex_lock(&boost_slot_mutex);
 	mutex_lock(&stune_boost_mutex);
-
-	/* Set initial value to default boost */
-	max_boost = st->boost_default;
-
-	/* Check for active boosts */
-	if (list_empty(&(st->active_boost_slots.list))) {
-		goto exit;
-	}
-
-	/* Get largest boost value */
-	list_for_each_entry(slot, &(st->active_boost_slots.list), list) {
-		int boost = st->slot_boost[slot->idx];
-		if (boost > max_boost)
-			max_boost = boost;
-	}
-
-exit:
-	mutex_unlock(&stune_boost_mutex);
-	mutex_unlock(&boost_slot_mutex);
-
-	return max_boost;
-}
-
-static int _do_stune_boost(struct schedtune *st, int boost, int *slot)
-{
-	int ret = 0;
-
-	/* Try to obtain boost slot */
-	ret = activate_boost_slot(st, boost, slot);
-
-	/* Check if boost slot obtained successfully */
-	if (ret)
-		return -EINVAL;
 
 	/* Set initial value to default boost */
 	max_boost = st->boost_default;
