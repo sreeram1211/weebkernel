@@ -212,8 +212,10 @@ static int __init init_qspinlock_stat(void)
 	struct dentry *d_qstat = debugfs_create_dir("qlockstat", NULL);
 	int i;
 
-	if (!d_qstat)
-		goto out;
+	if (!d_qstat) {
+		pr_warn("Could not create 'qlockstat' debugfs directory\n");
+		return 0;
+	}
 
 	/*
 	 * Create the debugfs files
@@ -223,20 +225,12 @@ static int __init init_qspinlock_stat(void)
 	 * performance.
 	 */
 	for (i = 0; i < qstat_num; i++)
-		if (!debugfs_create_file(qstat_names[i], 0400, d_qstat,
-					 (void *)(long)i, &fops_qstat))
-			goto fail_undo;
+		debugfs_create_file(qstat_names[i], 0400, d_qstat,
+				   (void *)(long)i, &fops_qstat);
 
-	if (!debugfs_create_file(qstat_names[qstat_reset_cnts], 0200, d_qstat,
-				 (void *)(long)qstat_reset_cnts, &fops_qstat))
-		goto fail_undo;
-
+	debugfs_create_file(qstat_names[qstat_reset_cnts], 0200, d_qstat,
+			   (void *)(long)qstat_reset_cnts, &fops_qstat);
 	return 0;
-fail_undo:
-	debugfs_remove_recursive(d_qstat);
-out:
-	pr_warn("Could not create 'qlockstat' debugfs entries\n");
-	return -ENOMEM;
 }
 fs_initcall(init_qspinlock_stat);
 
