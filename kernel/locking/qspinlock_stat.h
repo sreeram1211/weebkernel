@@ -136,12 +136,10 @@ static ssize_t qstat_read(struct file *file, char __user *user_buf,
 	}
 
 	if (counter == qstat_pv_hash_hops) {
-		u64 frac = 0;
+		u64 frac;
 
-		if (kicks) {
-			frac = 100ULL * do_div(stat, kicks);
-			frac = DIV_ROUND_CLOSEST_ULL(frac, kicks);
-		}
+		frac = 100ULL * do_div(stat, kicks);
+		frac = DIV_ROUND_CLOSEST_ULL(frac, kicks);
 
 		/*
 		 * Return a X.XX decimal number
