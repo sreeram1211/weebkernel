@@ -9,15 +9,12 @@
 #ifndef __ASSEMBLY__
 
 #include <asm/psr.h>
-#include <asm/barrier.h>
 #include <asm/processor.h> /* for cpu_relax */
 
 #define arch_spin_is_locked(lock) (*((volatile unsigned char *)(lock)) != 0)
 
-static inline void arch_spin_unlock_wait(arch_spinlock_t *lock)
-{
-	smp_cond_load_acquire(&lock->lock, !VAL);
-}
+#define arch_spin_unlock_wait(lock) \
+	do { while (arch_spin_is_locked(lock)) cpu_relax(); } while (0)
 
 static inline void arch_spin_lock(arch_spinlock_t *lock)
 {
