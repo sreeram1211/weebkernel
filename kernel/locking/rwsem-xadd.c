@@ -156,14 +156,9 @@ __rwsem_mark_wake(struct rw_semaphore *sem,
 		oldcount = atomic_long_add_return(adjustment, &sem->count) - adjustment;
 
 		if (unlikely(oldcount < RWSEM_WAITING_BIAS)) {
-			/*
-			 * If the count is still less than RWSEM_WAITING_BIAS
-			 * after removing the adjustment, it is assumed that
-			 * a writer has stolen the lock. We have to undo our
-			 * reader grant.
-			 */
-			if (atomic_long_add_return(-adjustment, &sem->count) <
-			    RWSEM_WAITING_BIAS)
+			/* A writer stole the lock. Undo our reader grant. */
+			if (atomic_long_sub_return(adjustment, &sem->count) &
+						RWSEM_ACTIVE_MASK)
 				goto out;
 			/* Last active locker left. Retry waking readers. */
 			goto try_reader_grant;
