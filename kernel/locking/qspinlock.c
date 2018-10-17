@@ -14,9 +14,8 @@
  * (C) Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
  * (C) Copyright 2013-2014 Red Hat, Inc.
  * (C) Copyright 2015 Intel Corp.
- * (C) Copyright 2015 Hewlett-Packard Enterprise Development LP
  *
- * Authors: Waiman Long <waiman.long@hpe.com>
+ * Authors: Waiman Long <waiman.long@hp.com>
  *          Peter Zijlstra <peterz@infradead.org>
  */
 
@@ -177,12 +176,7 @@ static __always_inline u32 xchg_tail(struct qspinlock *lock, u32 tail)
 {
 	struct __qspinlock *l = (void *)lock;
 
-	/*
-	 * Use release semantics to make sure that the MCS node is properly
-	 * initialized before changing the tail code.
-	 */
-	return (u32)xchg_release(&l->tail,
-				 tail >> _Q_TAIL_OFFSET) << _Q_TAIL_OFFSET;
+	return (u32)xchg(&l->tail, tail >> _Q_TAIL_OFFSET) << _Q_TAIL_OFFSET;
 }
 
 #else /* _Q_PENDING_BITS == 8 */
@@ -214,11 +208,7 @@ static __always_inline u32 xchg_tail(struct qspinlock *lock, u32 tail)
 
 	for (;;) {
 		new = (val & _Q_LOCKED_PENDING_MASK) | tail;
-		/*
-		 * Use release semantics to make sure that the MCS node is
-		 * properly initialized before changing the tail code.
-		 */
-		old = atomic_cmpxchg_release(&lock->val, val, new);
+		old = atomic_cmpxchg(&lock->val, val, new);
 		if (old == val)
 			break;
 
@@ -389,11 +379,7 @@ void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
 		if (val == new)
 			new |= _Q_PENDING_VAL;
 
-		/*
-		 * Acquire semantic is required here as the function may
-		 * return immediately if the lock was free.
-		 */
-		old = atomic_cmpxchg_acquire(&lock->val, val, new);
+		old = atomic_cmpxchg(&lock->val, val, new);
 		if (old == val)
 			break;
 
@@ -508,12 +494,7 @@ queue:
 			set_locked(lock);
 			break;
 		}
-		/*
-		 * The smp_load_acquire() call above has provided the necessary
-		 * acquire semantics required for locking. At most two
-		 * iterations of this loop may be ran.
-		 */
-		old = atomic_cmpxchg_relaxed(&lock->val, val, _Q_LOCKED_VAL);
+		old = atomic_cmpxchg(&lock->val, val, _Q_LOCKED_VAL);
 		if (old == val)
 			goto release;	/* No contention */
 

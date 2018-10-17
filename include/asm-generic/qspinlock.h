@@ -12,9 +12,8 @@
  * GNU General Public License for more details.
  *
  * (C) Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
- * (C) Copyright 2015 Hewlett-Packard Enterprise Development LP
  *
- * Authors: Waiman Long <waiman.long@hpe.com>
+ * Authors: Waiman Long <waiman.long@hp.com>
  */
 #ifndef __ASM_GENERIC_QSPINLOCK_H
 #define __ASM_GENERIC_QSPINLOCK_H
@@ -82,7 +81,7 @@ static __always_inline int queued_spin_is_contended(struct qspinlock *lock)
 static __always_inline int queued_spin_trylock(struct qspinlock *lock)
 {
 	if (!atomic_read(&lock->val) &&
-	   (atomic_cmpxchg_acquire(&lock->val, 0, _Q_LOCKED_VAL) == 0))
+	   (atomic_cmpxchg(&lock->val, 0, _Q_LOCKED_VAL) == 0))
 		return 1;
 	return 0;
 }
@@ -97,7 +96,7 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
 {
 	u32 val;
 
-	val = atomic_cmpxchg_acquire(&lock->val, 0, _Q_LOCKED_VAL);
+	val = atomic_cmpxchg(&lock->val, 0, _Q_LOCKED_VAL);
 	if (likely(val == 0))
 		return;
 	queued_spin_lock_slowpath(lock, val);
@@ -113,7 +112,7 @@ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
 	/*
 	 * smp_mb__before_atomic() in order to guarantee release semantics
 	 */
-	smp_mb__before_atomic();
+	smp_mb__before_atomic_dec();
 	atomic_sub(_Q_LOCKED_VAL, &lock->val);
 }
 #endif
