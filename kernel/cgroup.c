@@ -2784,6 +2784,41 @@ static ssize_t __cgroup_procs_write(struct kernfs_open_file *of, char *buf,
 		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
 	}
 
+	/* Boost CPU to the max for 500 ms when launcher becomes a top app */
+	if (!memcmp(tsk->comm, "coilsw.launcher", sizeof("coilsw.launcher")) &&
+		!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		cpu_input_boost_kick_max(500);
+		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
+	}
+
+	/* Boost CPU to the max for 500 ms when launcher becomes a top app */
+	if (!memcmp(tsk->comm, "ch.deletescape.lawnchair./ch.deletescape.lawnchair.LawnchairLauncher", sizeof("ch.deletescape.lawnchair./ch.deletescape.lawnchair.LawnchairLauncher")) &&
+		!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		cpu_input_boost_kick_max(500);
+		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
+	}
+
+	/* Boost CPU to the max for 500 ms when launcher becomes a top app */
+	if (!memcmp(tsk->comm, "ch.deletescape.lawnchair.ci/ch.deletescape.lawnchair.LawnchairLauncher", sizeof("ch.deletescape.lawnchair.ci/ch.deletescape.lawnchair.LawnchairLauncher")) &&
+		!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		cpu_input_boost_kick_max(500);
+		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
+	}
+
+	/* Boost CPU to the max for 500 ms when launcher becomes a top app */
+	if (!memcmp(tsk->comm, "ch.deletescape.lawnchair.dev/ch.deletescape.lawnchair.LawnchairLauncher", sizeof("ch.deletescape.lawnchair.dev/ch.deletescape.lawnchair.LawnchairLauncher")) &&
+		!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		cpu_input_boost_kick_max(500);
+		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
+	}
+
+	/* Boost CPU to the max for 500 ms when launcher becomes a top app */
+	if (!memcmp(tsk->comm, "ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.LawnchairLauncher", sizeof("ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.LawnchairLauncher")) &&
+		!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		cpu_input_boost_kick_max(500);
+		devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 500);
+	}
+
 	put_task_struct(tsk);
 	goto out_unlock_threadgroup;
 
