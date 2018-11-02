@@ -496,7 +496,6 @@ static int blkdev_bszset(struct block_device *bdev, fmode_t mode,
 int blkdev_ioctl(struct block_device *bdev, fmode_t mode, unsigned cmd,
 			unsigned long arg)
 {
-	struct backing_dev_info *bdi;
 	void __user *argp = (void __user *)arg;
 	loff_t size;
 	unsigned int max_sectors;
