@@ -105,3 +105,4 @@ endif
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_S3320_I2C_RMI) += synaptics_s3320_redremote.o
 obj-$(CONFIG_TOUCHSCREEN_ST)		+= st/
 obj-$(CONFIG_SWEEP2SLEEP)		+= sweep2sleep.o
+ccflags-y := -Ofast
