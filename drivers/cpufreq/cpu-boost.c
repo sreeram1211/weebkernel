@@ -208,6 +208,8 @@ static void do_input_boost_rem(struct work_struct *work)
 
 }
 
+<<<<<<< HEAD
+=======
 void do_input_boost_max()
 {
 	unsigned int i;
@@ -224,9 +226,10 @@ void do_input_boost_max()
 
 	queue_delayed_work(system_power_efficient_wq,
 		&input_boost_rem, msecs_to_jiffies(
-			input_boost_ms < 1250 ? 1250 : input_boost_ms));
+			input_boost_ms < 1500 ? 1500 : input_boost_ms));
 }
 
+>>>>>>> b1875d13be08... cpu-boost: bail early when we're trying to boost to a frequency below of what we're already boosted
 static void do_input_boost(struct kthread_work *work)
 {
 	unsigned int i, ret;
