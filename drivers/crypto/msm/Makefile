@@ -15,3 +15,5 @@ obj-$(CONFIG_CRYPTO_DEV_QCOM_ICE) += ice.o
 subdir-ccflags-y += \
 	$(call cc-option,-Wno-frame-larger-than=) \
 	-Wno-ignored-attributes
+
+ccflags-y += -Wno-array-bounds
