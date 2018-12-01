@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="🎄Christmas-Present-Weeb-v14-rc1🎄"
+CONFIG_LOCALVERSION="🎄Christmas-Present-Weeb-v1.14-rc2🎄"
 # CONFIG_USELIB is not set
 CONFIG_AUDIT=y
 # CONFIG_AUDITSYSCALL is not set
