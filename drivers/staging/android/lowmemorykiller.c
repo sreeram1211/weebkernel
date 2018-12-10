@@ -53,7 +53,7 @@
 #include <linux/cpu_input_boost.h>
 #include <linux/devfreq_boost.h>
 
-#define BOOST_DURATION_MS (250)
+#define BOOST_DURATION_MS (150)
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/almk.h>
