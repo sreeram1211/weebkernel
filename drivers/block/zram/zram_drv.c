@@ -935,7 +935,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
 	size_t num_pages;
 
 	num_pages = disksize >> PAGE_SHIFT;
-	zram->table = vzalloc(num_pages * sizeof(*zram->table));
+	zram->table = vzalloc(array_size(num_pages, sizeof(*zram->table)));
 	if (!zram->table)
 		return false;
 
@@ -1134,6 +1134,7 @@ compress_again:
 	}
 
 	if (unlikely(comp_len >= huge_class_size)) {
+		comp_len = PAGE_SIZE;
 		if (zram_wb_enabled(zram) && allow_wb) {
 			zcomp_stream_put(zram->comp);
 			ret = write_to_bdev(zram, bvec, index, bio, &element);
@@ -1734,6 +1735,8 @@ static int zram_add(void)
 
 	zram->disk->queue->backing_dev_info->capabilities |=
 					BDI_CAP_STABLE_WRITES;
+
+	disk_to_dev(zram->disk)->groups = zram_disk_attr_groups;
 	add_disk(zram->disk);
 
 	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
